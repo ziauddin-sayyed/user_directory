@@ -1,0 +1,16 @@
+<%- include('partials/head', { title: 'Register', user: typeof user !== 'undefined' ? user : null }) %>
+
+<div class="auth-card">
+  <img src="/new_logo.png" class="auth-logo" alt="File Manager" />
+  <h1>Register</h1>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <form method="POST" action="/auth/register">
+    <label>Username <input type="text" name="username" required /></label>
+    <label>Email <input type="email" name="email" required /></label>
+    <label>Password <input type="password" name="password" required /></label>
+    <button type="submit" class="full">Create account</button>
+  </form>
+  <p>Have an account? <a href="/login">Login</a></p>
+</div>
+
+<%- include('partials/foot') %>

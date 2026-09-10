@@ -1,0 +1,5 @@
+<%- include('partials/head', { title: 'Error', user: typeof user !== 'undefined' ? user : null }) %>
+<h1>Error</h1>
+<p class="error"><%= message %></p>
+<a href="/dashboard">Back to dashboard</a>
+<%- include('partials/foot') %>

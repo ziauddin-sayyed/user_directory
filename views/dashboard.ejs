@@ -1,0 +1,39 @@
+<%- include('partials/head', { title: 'My Files', user: user }) %>
+
+<h1>My Files</h1>
+
+<section class="card">
+  <h2>Upload a file</h2>
+  <form method="POST" action="/dashboard/upload" enctype="multipart/form-data">
+    <input type="file" name="file" required />
+    <button type="submit">Upload</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Files (<%= files.length %>)</h2>
+  <% if (files.length === 0) { %>
+    <p>No files yet.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>Name</th><th>Size</th><th>Uploaded</th><th></th></tr></thead>
+      <tbody>
+        <% files.forEach(function(f){ %>
+          <tr>
+            <td><%= f.original_name %></td>
+            <td><%= (f.size/1024).toFixed(1) %> KB</td>
+            <td><%= f.uploaded_at %></td>
+            <td>
+              <a href="/dashboard/download/<%= f.id %>">Download</a>
+              <form method="POST" action="/dashboard/delete/<%= f.id %>" class="inline">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+
+<%- include('partials/foot') %>

@@ -1,0 +1,17 @@
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/dashboard"><img src="/new_logo.png" class="logo" alt="File Manager" /> File Manager</a>
+    <nav>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <a href="/dashboard">My Files</a>
+        <a href="/dashboard/profile">Profile</a>
+        <% if (user.role === 'admin') { %>
+          <a href="/admin/users">Users</a>
+          <a href="/admin/files">All Files</a>
+        <% } %>
+        <span class="user"><%= user.username %> (<%= user.role %>)</span>
+        <a href="/auth/logout">Logout</a>
+      <% } %>
+    </nav>
+  </div>
+</header>

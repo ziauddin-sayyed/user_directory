@@ -1,0 +1,27 @@
+<%- include('partials/head', { title: 'Profile', user: user }) %>
+
+<div class="auth-card">
+  <img src="/new_logo.png" class="auth-logo" alt="File Manager" />
+  <h1>Profile</h1>
+
+  <section class="card">
+    <h2>Account details</h2>
+    <p><strong>Username:</strong> <%= user.username %></p>
+    <p><strong>Email:</strong> <%= user.email %></p>
+    <p><strong>Role:</strong> <%= user.role %></p>
+    <p><strong>Member since:</strong> <%= user.created_at %></p>
+  </section>
+
+  <section class="card">
+    <h2>Change password</h2>
+    <form method="POST" action="/dashboard/profile">
+      <label>Current password <input type="password" name="current" required /></label>
+      <label>New password <input type="password" name="next" required /></label>
+      <button type="submit" class="full">Update password</button>
+    </form>
+  </section>
+
+  <p><a href="/dashboard">Back to My Files</a></p>
+</div>
+
+<%- include('partials/foot') %>

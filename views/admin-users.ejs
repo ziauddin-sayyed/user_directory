@@ -1,0 +1,103 @@
+<%- include('partials/head', { title: 'Admin - Users', user: user }) %>
+
+<h1>Users</h1>
+
+<section class="card">
+  <h2>Create user</h2>
+  <form method="POST" action="/admin/users">
+    <label>Username <input type="text" name="username" required /></label>
+    <label>Email <input type="email" name="email" required /></label>
+    <label>Password <input type="password" name="password" required /></label>
+    <label>Role
+      <select name="role">
+        <option value="user">user</option>
+        <option value="admin">admin</option>
+      </select>
+    </label>
+    <button type="submit">Create</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>All users</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Files</th><th></th></tr></thead>
+    <tbody>
+      <% users.forEach(function(u){ %>
+        <tr>
+          <td><%= u.id %></td>
+          <td><%= u.username %></td>
+          <td><%= u.email %></td>
+          <td><%= u.role %></td>
+          <td><%= counts[u.id] || 0 %></td>
+          <td>
+            <button type="button" class="icon-btn" onclick="document.getElementById('edit-<%= u.id %>').classList.toggle('hidden')">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+            </button>
+            <form method="POST" action="/admin/users/<%= u.id %>/delete" class="inline">
+              <button type="submit" class="danger icon-btn" title="Delete user">✕</button>
+            </form>
+          </td>
+        </tr>
+        <tr id="edit-<%= u.id %>" class="hidden edit-row">
+          <td colspan="6">
+            <form method="POST" action="/admin/users/<%= u.id %>" class="edit-form">
+              <label>Username <input type="text" name="username" value="<%= u.username %>" required /></label>
+              <label>Email <input type="email" name="email" value="<%= u.email %>" required /></label>
+              <label>Role
+                <select name="role">
+                  <option value="user" <%= u.role==='user' ? 'selected' : '' %>>user</option>
+                  <option value="admin" <%= u.role==='admin' ? 'selected' : '' %>>admin</option>
+                </select>
+              </label>
+              <button type="submit">Save</button>
+            </form>
+            <form method="POST" action="/admin/users/<%= u.id %>/reset-password" class="edit-form">
+              <label>Reset password <input type="password" name="password" placeholder="new password" required /></label>
+              <button type="submit">Reset PW</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+
+<style>
+  .icon-btn {
+    background: none;
+    border: 1px solid #334155;
+    color: var(--text);
+    padding: 0.35rem 0.45rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .icon-btn:hover { background: #334155; }
+  .icon-btn.danger { color: var(--danger); border-color: var(--danger); }
+  .hidden { display: none; }
+  .edit-row td { padding: 0.5rem 0.75rem; background: #0f172a; }
+  .edit-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-right: 1.5rem;
+  }
+  .edit-form label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+  }
+  .edit-form input, .edit-form select {
+    display: inline;
+    width: auto;
+    max-width: 200px;
+  }
+  .edit-form button { white-space: nowrap; }
+</style>
+
+<%- include('partials/foot') %>

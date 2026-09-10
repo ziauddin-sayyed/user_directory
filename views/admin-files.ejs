@@ -1,0 +1,46 @@
+<%- include('partials/head', { title: 'Admin - All Files', user: user }) %>
+
+<h1>All User Files</h1>
+
+<section class="card">
+  <form method="GET" action="/admin/files" class="filter-bar">
+    <label>Filter by user
+      <select name="user_id" onchange="this.form.submit()">
+        <option value="all" <%= filterUser === 'all' ? 'selected' : '' %>>All users</option>
+        <% users.forEach(function(u){ %>
+          <option value="<%= u.id %>" <%= filterUser == u.id ? 'selected' : '' %>><%= u.username %></option>
+        <% }) %>
+      </select>
+    </label>
+    <noscript><button type="submit">Apply</button></noscript>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Files (<%= files.length %>)</h2>
+  <% if (files.length === 0) { %>
+    <p>No files uploaded<%= filterUser !== 'all' ? ' for this user' : '' %>.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>User</th><th>Name</th><th>Size</th><th>Uploaded</th><th></th></tr></thead>
+      <tbody>
+        <% files.forEach(function(f){ %>
+          <tr>
+            <td><%= f.username %></td>
+            <td><%= f.original_name %></td>
+            <td><%= (f.size/1024).toFixed(1) %> KB</td>
+            <td><%= f.uploaded_at %></td>
+            <td>
+              <a href="/admin/files/<%= f.id %>/download">Download</a>
+              <form method="POST" action="/admin/files/<%= f.id %>/delete" class="inline">
+                <button type="submit" class="danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+
+<%- include('partials/foot') %>
